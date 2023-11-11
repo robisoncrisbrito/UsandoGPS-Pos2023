@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
         binding = ActivityMainBinding.inflate( layoutInflater )
         setContentView( binding.root )
 
+        binding.btMapa.setOnClickListener {
+            btMapaOnClick()
+        }
+
         locationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
 
         if ( ! locationManager.isProviderEnabled( LocationManager.NETWORK_PROVIDER ) ) {
@@ -55,6 +59,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         locationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER, 0, 0f, this )
 
+    }
+
+    private fun btMapaOnClick() {
+        val intent = Intent( this, MapsActivity::class.java )
+        intent.putExtra( "latitude", binding.tvLatitude.text.toString().toDouble() )
+        intent.putExtra( "longitude", binding.tvLongitude.text.toString().toDouble() )
+        startActivity( intent )
     }
 
     override fun onLocationChanged(location: Location) {
