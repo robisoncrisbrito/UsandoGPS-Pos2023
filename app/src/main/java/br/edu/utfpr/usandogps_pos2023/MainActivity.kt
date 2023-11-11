@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         binding.btEndereco.setOnClickListener {
             btEnderecoOnClick()
+        }
+
+        binding.btImagem.setOnClickListener {
+            btImagemOnClick()
         }
 
         locationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
@@ -70,20 +75,38 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     }
 
-    private fun btEnderecoOnClick() {
-        Thread( Runnable {
+    private fun btImagemOnClick() {
+        //https://maps.googleapis.com/maps/api/staticmap?center=-26.081185,-53.091238&zoom=15&size=400x400&key=AIzaSyBcnJmftWCsfnTjVtkP-ed3us1Jzi83M2c
 
-            val enderecoURL = "https://maps.googleapis.com/maps/api/geocode/xml?latlng=${binding.tvLatitude.text.toString()},${binding.tvLongitude.text.toString()}&key=AIzaSyAIezMrULJJrEvIyXs2GTR7kbypkTNSQUE"
+        Thread ( Runnable {
 
+            val enderecoURL = "https://maps.googleapis.com/maps/api/staticmap?center=${binding.tvLatitude.text.toString()},${binding.tvLongitude.text.toString()}&zoom=15&size=400x400&key=AIzaSyBcnJmftWCsfnTjVtkP-ed3us1Jzi83M2"
             val url = URL(enderecoURL)
             val urlConnection = url.openConnection()
 
             val inputStream = urlConnection.getInputStream()
 
+            val imagem = BitmapFactory.decodeStream( inputStream )
+
+            binding.ivMapa.setImageBitmap( imagem )
+
+        } ).start()
+
+
+        //formatar a imagem no ImageView
+    }
+
+    private fun btEnderecoOnClick() {
+        Thread( Runnable {
+
+            val enderecoURL = "https://maps.googleapis.com/maps/api/geocode/xml?latlng=${binding.tvLatitude.text.toString()},${binding.tvLongitude.text.toString()}&key=AIzaSyAIezMrULJJrEvIyXs2GTR7kbypkTNSQUE"
+            val url = URL(enderecoURL)
+            val urlConnection = url.openConnection()
+
+            val inputStream = urlConnection.getInputStream()
             val entrada = BufferedReader( InputStreamReader( inputStream ) )
 
             val saida = StringBuilder()
-
             var caractere = entrada.readLine()
 
             while ( caractere != null ) {
@@ -91,7 +114,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 caractere = entrada.readLine()
             }
 
-            exibirAlerta( saida.toString() )
+            runOnUiThread {
+                val enderecoFormatado = saida.substring(
+                                            saida.indexOf( "<formatted_address>" ) + 19,
+                                            saida.indexOf( "</formatted_address>")
+                                        )
+
+                exibirAlerta(enderecoFormatado)
+            }
 
         } ).start()
 
@@ -120,5 +150,5 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     }
 
-    //AIzaSyAIezMrULJJrEvIyXs2GTR7kbypkTNSQUE
+    //AIzaSyBcnJmftWCsfnTjVtkP-ed3us1Jzi83M2c
 }

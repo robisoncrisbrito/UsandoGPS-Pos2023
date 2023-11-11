@@ -6,4 +6,5 @@
     <string name="sem_sinal">Sem Sinal</string>
     <string name="longitude">Longitude:</string>
     <string name="latitude">Latitude:</string>
+    <string name="ver_imagem">Ver Imagem</string>
 </resources>
