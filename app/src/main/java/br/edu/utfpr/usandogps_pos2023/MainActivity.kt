@@ -10,8 +10,13 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import br.edu.utfpr.usandogps_pos2023.databinding.ActivityMainBinding
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.lang.StringBuilder
+import java.net.URL
 
 class MainActivity : AppCompatActivity(), LocationListener {
 
@@ -26,6 +31,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         binding.btMapa.setOnClickListener {
             btMapaOnClick()
+        }
+
+        binding.btEndereco.setOnClickListener {
+            btEnderecoOnClick()
         }
 
         locationManager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
@@ -61,6 +70,42 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     }
 
+    private fun btEnderecoOnClick() {
+        Thread( Runnable {
+
+            val enderecoURL = "https://maps.googleapis.com/maps/api/geocode/xml?latlng=${binding.tvLatitude.text.toString()},${binding.tvLongitude.text.toString()}&key=AIzaSyAIezMrULJJrEvIyXs2GTR7kbypkTNSQUE"
+
+            val url = URL(enderecoURL)
+            val urlConnection = url.openConnection()
+
+            val inputStream = urlConnection.getInputStream()
+
+            val entrada = BufferedReader( InputStreamReader( inputStream ) )
+
+            val saida = StringBuilder()
+
+            var caractere = entrada.readLine()
+
+            while ( caractere != null ) {
+                saida.append( caractere )
+                caractere = entrada.readLine()
+            }
+
+            exibirAlerta( saida.toString() )
+
+        } ).start()
+
+    }
+
+    fun exibirAlerta( msg : String ) {
+        val dialog = AlertDialog.Builder( this )
+        dialog.setTitle( "Endereço" )
+        dialog.setMessage( msg )
+        dialog.setNeutralButton( "OK", null )
+        dialog.setCancelable( false )
+        dialog.show()
+    }
+
     private fun btMapaOnClick() {
         val intent = Intent( this, MapsActivity::class.java )
         intent.putExtra( "latitude", binding.tvLatitude.text.toString().toDouble() )
@@ -75,4 +120,5 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     }
 
+    //AIzaSyAIezMrULJJrEvIyXs2GTR7kbypkTNSQUE
 }

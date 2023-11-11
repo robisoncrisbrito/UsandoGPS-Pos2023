@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">UsandoGPS-Pos2023</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="ver_endere_o">Ver Endereço</string>
+    <string name="ver_mapa">Ver Mapa</string>
+    <string name="sem_sinal">Sem Sinal</string>
+    <string name="longitude">Longitude:</string>
+    <string name="latitude">Latitude:</string>
 </resources>

@@ -10,31 +10,37 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Latitude:" />
+        android:text="@string/latitude" />
 
     <TextView
         android:id="@+id/tvLatitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:text="Sem Sinal" />
+        android:text="@string/sem_sinal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Longitude:" />
+        android:text="@string/longitude" />
 
     <TextView
         android:id="@+id/tvLongitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:text="Sem Sinal" />
+        android:text="@string/sem_sinal" />
 
     <Button
         android:id="@+id/btMapa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ver Mapa" />
+        android:text="@string/ver_mapa" />
+
+    <Button
+        android:id="@+id/btEndereco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ver_endere_o" />
 
 </LinearLayout>
